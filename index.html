@@ -1,314 +1,113 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>certificado digital seguro</title>
-  <meta name="description" content="Emita e renove seu certificado digital com rapidez, segurança e suporte humano. ICP-Brasil, e-CPF, e-CNPJ e mais." />
-  <meta name="theme-color" content="#e4f0f2" />
-  <meta property="og:title" content="certificado digital seguro" />
-  <meta property="og:description" content="Emissão e renovação de certificado digital com atendimento ágil." />
-  <meta property="og:type" content="website" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Certificado Digital Seguro</title>
   <style>
-    :root{
-      --brand:#0e7486;               /* primário escuro para contraste */
-      --brand-2:#126a78;             /* variação */
-      --bg:#e4f0f2;                  /* cor média informada */
-      --ink:#0b2a30;                 /* texto principal */
-      --muted:#547079;               /* texto secundário */
-      --ok:#1f9d55;                  /* destaque positivo */
-      --warn:#b45309;                /* aviso */
-      --radius:16px;
-      --shadow:0 8px 30px rgba(0,0,0,.08);
-      --maxw:1200px;
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: rgb(228, 240, 242);
+      color: #333;
     }
-    *{box-sizing:border-box}
-    html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Inter,Arial}
-    a{color:var(--brand);text-decoration:none}
-    a:hover{text-decoration:underline}
-    .container{max-width:var(--maxw);margin:auto;padding:0 20px}
-    header{position:sticky;top:0;z-index:50;background:rgba(228,240,242,.85);backdrop-filter:saturate(140%) blur(6px);border-bottom:1px solid rgba(0,0,0,.06)}
-    .nav{display:flex;align-items:center;justify-content:space-between;height:68px}
-    .brand{display:flex;gap:10px;align-items:center;font-weight:700;text-transform:lowercase}
-    .brand svg{width:28px;height:28px}
-    .nav a.btn{padding:10px 14px;border-radius:999px;background:var(--brand);color:#fff;box-shadow:var(--shadow);font-weight:600}
-    .nav a.btn:hover{background:var(--brand-2)}
 
-    .hero{padding:56px 0 24px}
-    .hero-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:24px;align-items:center}
-    .card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow)}
-    .p24{padding:24px}
-    h1{margin:0 0 10px;font-size:clamp(28px,3.6vw,42px);line-height:1.2}
-    .lead{color:var(--muted);font-size:18px}
-    .bullets{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px}
-    .pill{display:inline-flex;gap:8px;align-items:center;padding:8px 12px;border-radius:999px;background:#fff;border:1px solid rgba(0,0,0,.06)}
+    header {
+      background-color: #fff;
+      padding: 20px;
+      text-align: center;
+      border-bottom: 2px solid #ccc;
+    }
 
-    .cta-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
-    .btn{display:inline-flex;align-items:center;gap:10px;border-radius:999px;padding:12px 16px;font-weight:700;border:1px solid transparent}
-    .btn.primary{background:var(--brand);color:#fff}
-    .btn.primary:hover{background:var(--brand-2)}
-    .btn.ghost{background:#fff;border-color:rgba(0,0,0,.08)}
+    h1 {
+      margin: 0;
+      color: #007b8f;
+    }
 
-    .trust{display:flex;gap:14px;flex-wrap:wrap;margin-top:18px;color:var(--muted);font-size:14px}
-    .trust .i{display:inline-flex;gap:8px;align-items:center;padding:8px 12px;border-radius:12px;background:#fff;border:1px solid rgba(0,0,0,.06)}
+    main {
+      padding: 20px;
+    }
 
-    section{padding:40px 0}
-    h2{margin:0 0 12px;font-size:clamp(22px,2.8vw,32px)}
-    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-    .grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
-    .item{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow)}
-    .item h3{margin:0 0 6px}
-    .item p{margin:0;color:var(--muted)}
+    .hero {
+      text-align: center;
+      margin-bottom: 40px;
+    }
 
-    .steps ol{margin:0;padding-left:20px}
-    .steps li{margin:10px 0}
+    #whatsapp-button {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 12px 20px;
+      background-color: #25d366;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
+    }
 
-    .plans .price{font-size:28px;font-weight:800}
-    .plans .note{font-size:14px;color:var(--muted)}
+    #whatsapp-button:hover {
+      background-color: #1ebe5d;
+    }
 
-    .faq details{background:#fff;border-radius:12px;box-shadow:var(--shadow);padding:14px}
-    .faq details+details{margin-top:12px}
-    .faq summary{cursor:pointer;font-weight:700}
-    .faq p{color:var(--muted);margin:8px 0 0}
+    section {
+      margin-bottom: 40px;
+    }
 
-    .contact form{display:grid;gap:10px}
-    input,select,textarea{padding:12px 14px;border:1px solid rgba(0,0,0,.12);border-radius:10px;background:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.6)}
-    textarea{min-height:120px}
-    .contact .side{display:grid;gap:10px}
-    .contact .side .box{background:#fff;border:1px solid rgba(0,0,0,.06);border-radius:12px;padding:14px}
-
-    footer{padding:28px 0;border-top:1px solid rgba(0,0,0,.08);font-size:14px;color:var(--muted)}
-
-    @media (max-width: 980px){
-      .hero-grid{grid-template-columns:1fr}
-      .grid-3{grid-template-columns:1fr}
-      .grid-2{grid-template-columns:1fr}
+    footer {
+      text-align: center;
+      padding: 20px;
+      background-color: #fff;
+      border-top: 2px solid #ccc;
     }
   </style>
 </head>
 <body>
-  <!-- NAV -->
   <header>
-    <div class="container nav">
-      <a class="brand" href="#top" aria-label="Início">
-        <!-- Logo minimalista -->
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path fill="currentColor" d="M12 2l7 4v6c0 5-3.5 9-7 10-3.5-1-7-5-7-10V6l7-4zm0 5a4 4 0 100 8 4 4 0 000-8z"/>
-        </svg>
-        <span>certificado digital seguro</span>
-      </a>
-      <nav aria-label="primária">
-        <a href="#servicos">Serviços</a>
-        &nbsp;·&nbsp;
-        <a href="#como-funciona">Como funciona</a>
-        &nbsp;·&nbsp;
-        <a href="#planos">Planos</a>
-        &nbsp;·&nbsp;
-        <a href="#faq">FAQ</a>
-        &nbsp;·&nbsp;
-        <a class="btn" href="#contato">Contato</a>
-      </nav>
-      <a class="btn primary" href="https://wa.me/554333040233" target="_blank" rel="noopener" aria-label="WhatsApp">WhatsApp</a>
-    </div>
+    <h1>Certificado Digital Seguro</h1>
   </header>
 
-  <!-- HERO -->
-  <section class="hero" id="top">
-    <div class="container hero-grid">
-      <div>
-        <h1>Certificado digital com segurança e agilidade</h1>
-        <p class="lead">Emissão e renovação de e-CPF, e-CNPJ e NF-e. Valide por videoconferência ou presencial. Atendimento humano e direto.</p>
-        <div class="bullets">
-          <span class="pill">✔ ICP-Brasil</span>
-          <span class="pill">✔ Emissão em minutos</span>
-          <span class="pill">✔ Suporte dedicado</span>
-        </div>
-        <div class="cta-row">
-          <a class="btn primary" href="#planos">Ver planos</a>
-          <a class="btn ghost" href="#como-funciona">Como funciona</a>
-        </div>
-        <div class="trust">
-          <span class="i">🔐 Criptografia forte</span>
-          <span class="i">🪪 Assinatura digital</span>
-          <span class="i">📜 Conformidade legal</span>
-        </div>
-      </div>
-      <div class="card p24" aria-label="Destaques">
-        <h3 style="margin:0 0 6px">Atalhos rápidos</h3>
-        <div class="grid-2">
-          <a class="item p24" href="#servicos"><h3>Tipos de certificados</h3><p>e-CPF, e-CNPJ, NF-e, CT-e e mais.</p></a>
-          <a class="item p24" href="#como-funciona"><h3>Validação</h3><p>Online por video ou presencial.</p></a>
-          <a class="item p24" href="#planos"><h3>Planos e valores</h3><p>Transparência total.</p></a>
-          <a class="item p24" href="#contato"><h3>Contato</h3><p>Tire dúvidas agora.</p></a>
-        </div>
-      </div>
-    </div>
-  </section>
+  <main>
+    <section class="hero">
+      <h2>Conectando confiança em cada transação digital</h2>
+      <p>Há mais de 10 anos emitindo Certificados Digitais de forma rápida e segura.</p>
+      <a id="whatsapp-button" href="#" target="_blank">Emitir Certificado via WhatsApp</a>
+    </section>
 
-  <!-- SERVIÇOS -->
-  <section id="servicos">
-    <div class="container">
-      <h2>Serviços</h2>
-      <p class="lead">Soluções para pessoa física, jurídica e profissionais que exigem validade jurídica.</p>
-      <div class="grid-3">
-        <div class="item p24">
-          <h3>e-CPF</h3>
-          <p>Assinatura de documentos, acesso a e-CAC, Conecte SUS e serviços governamentais.</p>
-        </div>
-        <div class="item p24">
-          <h3>e-CNPJ</h3>
-          <p>NF-e, eSocial, e-CAC PJ, procurações e atos societários.</p>
-        </div>
-        <div class="item p24">
-          <h3>NF-e / NFC-e / CT-e</h3>
-          <p>Certificados para emissão de notas e documentos fiscais eletrônicos.</p>
-        </div>
-        <div class="item p24">
-          <h3>Renovação</h3>
-          <p>Renove com reaproveitamento de dados, quando possível, e validação remota.</p>
-        </div>
-        <div class="item p24">
-          <h3>Token / Cartão</h3>
-          <p>Opções A1 (arquivo) e A3 (token/cartão) conforme sua necessidade.</p>
-        </div>
-        <div class="item p24">
-          <h3>Suporte e Instalação</h3>
-          <p>Auxílio completo de instalação e uso com passo a passo.</p>
-        </div>
-      </div>
-    </div>
-  </section>
+    <section class="benefits">
+      <h3>Por que fazer seu certificado digital?</h3>
+      <ul>
+        <li><strong>Segurança Digital:</strong> Protege informações contra acessos não autorizados.</li>
+        <li><strong>Conformidade Legal:</strong> Garante validade jurídica de documentos digitais.</li>
+        <li><strong>Facilidade e Agilidade:</strong> Assinatura digital e menos burocracia.</li>
+      </ul>
+    </section>
 
-  <!-- COMO FUNCIONA -->
-  <section id="como-funciona" class="steps">
-    <div class="container">
-      <h2>Como funciona</h2>
-      <div class="grid-2">
-        <div class="item p24">
-          <h3>1) Escolha e envie seus dados</h3>
-          <p>Selecione o tipo de certificado e preencha seus dados com documentos.</p>
-          <h3>2) Validação</h3>
-          <p>Confirmação por videoconferência ou presencial, conforme regras ICP-Brasil.</p>
-          <h3>3) Emissão</h3>
-          <p>Após validar, emitimos o certificado e entregamos as instruções de uso.</p>
-        </div>
-        <div class="item p24">
-          <h3>Documentos básicos</h3>
-          <ol>
-            <li>Pessoa física: documento com foto, CPF e comprovante de endereço.</li>
-            <li>Empresa: contrato social, CNPJ, documentos do responsável.</li>
-            <li>Profissionais: registros de conselho quando aplicável.</li>
-          </ol>
-          <p class="note">Exigências podem variar conforme o tipo de certificado e validação.</p>
-        </div>
-      </div>
-    </div>
-  </section>
+    <section class="types">
+      <h3>Tipos de Certificados</h3>
+      <ul>
+        <li><strong>e-CPF:</strong> Para pessoa física, autenticação e assinatura digital.</li>
+        <li><strong>e-CNPJ:</strong> Para pessoa jurídica, documentos eletrônicos com validade legal.</li>
+      </ul>
+    </section>
 
-  <!-- PLANOS -->
-  <section id="planos" class="plans">
-    <div class="container">
-      <h2>Planos</h2>
-      <p class="lead">Valores exemplo. Ajuste conforme sua política comercial.</p>
-      <div class="grid-3">
-        <div class="item p24">
-          <h3>A1 e-CPF</h3>
-          <p class="price">R$ 169</p>
-          <p class="note">Validade 12 meses. Arquivo.</p>
-          <a class="btn primary" href="#contato">Contratar</a>
-        </div>
-        <div class="item p24">
-          <h3>A3 e-CPF</h3>
-          <p class="price">R$ 249</p>
-          <p class="note">Token/Cartão. 12 a 36 meses.</p>
-          <a class="btn primary" href="#contato">Contratar</a>
-        </div>
-        <div class="item p24">
-          <h3>e-CNPJ</h3>
-          <p class="price">R$ 389</p>
-          <p class="note">A1 ou A3 conforme demanda.</p>
-          <a class="btn primary" href="#contato">Contratar</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- FAQ -->
-  <section id="faq" class="faq">
-    <div class="container">
-      <h2>Perguntas frequentes</h2>
-      <details>
-        <summary>Qual a diferença entre A1 e A3?</summary>
-        <p>A1 é arquivo instalado no computador. A3 exige mídia criptográfica (token ou cartão). A3 costuma ter validade maior.</p>
-      </details>
-      <details>
-        <summary>Posso validar por vídeo?</summary>
-        <p>Sim. Seguindo as normas da ICP-Brasil quando habilitado para seu tipo de certificado.</p>
-      </details>
-      <details>
-        <summary>Quais formas de pagamento?</summary>
-        <p>Defina aqui: pix, cartão, boleto, faturado etc.</p>
-      </details>
-    </div>
-  </section>
-
-  <!-- CONTATO -->
-  <section id="contato" class="contact">
-    <div class="container">
-      <h2>Contato</h2>
-      <div class="grid-2">
-        <form onsubmit="return sendLead(event)">
-          <input name="nome" placeholder="Nome" required />
-          <input name="email" type="email" placeholder="E-mail" required />
-          <input name="telefone" placeholder="Telefone" />
-          <select name="tipo">
-            <option value="e-CPF">e-CPF</option>
-            <option value="e-CNPJ">e-CNPJ</option>
-            <option value="NF-e">NF-e / NFC-e / CT-e</option>
-            <option value="Renovação">Renovação</option>
-          </select>
-          <textarea name="mensagem" placeholder="Mensagem"></textarea>
-          <button class="btn primary" type="submit">Enviar</button>
-          <p id="form-status" class="note"></p>
-        </form>
-        <div class="side">
-          <div class="box">
-            <h3>WhatsApp</h3>
-            <p><a href="https://wa.me/554333040233" target="_blank" rel="noopener">+55 43 3304-0233</a></p>
-          </div>
-          <div class="box">
-            <h3>Atendimento</h3>
-            <p>Seg a Sex, 08:00–18:00</p>
-          </div>
-          <div class="box">
-            <h3>Endereço</h3>
-            <p>Adicione seu endereço aqui.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+    <section class="contact">
+      <h3>Entre em contato</h3>
+      <p>Telefone: (43) 3304-0233</p>
+      <p>Email: contato@certificadodigitalseguro.com.br</p>
+    </section>
+  </main>
 
   <footer>
-    <div class="container">
-      © <span id="y"></span> certificado digital seguro. Todos os direitos reservados.
-    </div>
+    <p>&copy; 2025 Certificado Digital Seguro</p>
   </footer>
 
   <script>
-    // ano dinâmico
-    document.getElementById('y').textContent = new Date().getFullYear();
-
-    // envio simples sem backend: abre WhatsApp com pré-texto
-    function sendLead(e){
-      e.preventDefault();
-      const data = Object.fromEntries(new FormData(e.target).entries());
-      const msg = `Olá! Sou ${data.nome}. Email: ${data.email}. Tel: ${data.telefone||'-'}. Tipo: ${data.tipo}. Mensagem: ${data.mensagem||'-'}`;
-      const url = `https://wa.me/554333040233?text=${encodeURIComponent(msg)}`;
-      window.open(url,'_blank');
-      document.getElementById('form-status').textContent = 'Abrimos uma conversa no WhatsApp com seus dados.';
-      return false;
-    }
+    document.addEventListener("DOMContentLoaded", function () {
+      const whatsappButton = document.getElementById("whatsapp-button");
+      const phoneNumber = "554333040233";
+      const message = encodeURIComponent("Olá, quero emitir meu certificado tal");
+      const whatsappLink = `https://wa.me/${phoneNumber}?text=${message}`;
+      whatsappButton.href = whatsappLink;
+    });
   </script>
 </body>
 </html>
