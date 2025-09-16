@@ -1,222 +1,314 @@
 <!doctype html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Garcia Certificadora — Sua Versão</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<style>
-  :root{
-    /* ajuste as cores para ficar próximo do site de referência */
-    --brand:#0fa66e;   /* verde principal */
-    --accent:#f59e0b;  /* laranja de destaque */
-    --ink:#0f172a;     /* texto */
-    --muted:#475569;   /* texto secundário */
-    --bg:#f7faf9;      /* fundo */
-    --card:#ffffff;    /* cartão */
-    --line:#e2e8f0;    /* borda */
-  }
-  *{box-sizing:border-box} html,body{margin:0}
-  body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;color:var(--ink);background:var(--bg)}
-  a{color:inherit;text-decoration:none}
-  .wrap{max-width:1120px;margin:0 auto;padding:0 16px}
-  header{background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10}
-  .top{display:flex;align-items:center;justify-content:space-between;padding:12px 0}
-  .logo{display:flex;gap:10px;align-items:center}
-  .logo .mark{width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,var(--brand),#17c184)}
-  .logo h1{font-size:18px;margin:0}
-  nav{display:flex;gap:16px}
-  nav a{font-size:14px;color:var(--muted)}
-  .cta{display:inline-flex;gap:8px;align-items:center;background:var(--brand);color:#fff;padding:10px 14px;border-radius:10px;font-weight:600}
-  .cta i{font-size:18px}
-  .hero{background:linear-gradient(180deg,rgba(15,166,110,.07),transparent);padding:30px 0 24px}
-  .hero .grid{display:grid;grid-template-columns:1.2fr .8fr;gap:24px}
-  .h-title{font-size:30px;line-height:1.15;margin:0 0 8px}
-  .h-sub{color:var(--muted);margin:0 0 16px}
-  .badges{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
-  .badge{font-size:12px;padding:6px 10px;border-radius:999px;background:#eaf9f3;color:#0a6e4d;border:1px solid #cfeede}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
-  .phone-mock{height:260px;border:10px solid #000;border-bottom-width:14px;border-radius:28px;background:#111;display:grid;place-items:center;color:#fff}
-  .section{padding:26px 0}
-  .section h2{font-size:22px;margin:0 0 12px}
-  .grid{display:grid;gap:16px}
-  .grid.cols-3{grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
-  .grid.cols-4{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
-  .prod .icon{width:52px;height:52px;border-radius:12px;background:#f0fdf4;color:#0a6e4d;display:grid;place-items:center;margin:6px auto 10px}
-  .prod h3{margin:4px 0;font-size:18px}
-  .prod p{margin:0 0 12px;color:var(--muted);font-size:14px}
-  .btn{display:inline-flex;gap:8px;align-items:center;justify-content:center;background:var(--accent);color:#111;padding:10px 14px;border-radius:10px;font-weight:700}
-  .btn.whats{background:#25D366;color:#fff}
-  .steps{counter-reset:step}
-  .step{display:flex;gap:12px}
-  .dot{width:34px;height:34px;border-radius:999px;background:var(--brand);color:#fff;display:grid;place-items:center;font-weight:700;flex:0 0 34px}
-  .step p{margin:0;color:var(--muted)}
-  .benefit{display:flex;gap:12px;align-items:flex-start}
-  .benefit i{color:var(--brand);font-size:18px;margin-top:3px}
-  .faq details{border:1px solid var(--line);border-radius:12px;background:var(--card);padding:12px 14px}
-  .faq summary{cursor:pointer;font-weight:600}
-  .faq p{color:var(--muted);margin:8px 0 0}
-  footer{margin-top:30px;border-top:1px solid var(--line);background:var(--card)}
-  .foot{display:grid;gap:16px;grid-template-columns:1fr 1fr}
-  @media(max-width:880px){
-    .hero .grid{grid-template-columns:1fr}
-    .foot{grid-template-columns:1fr}
-  }
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>certificado digital seguro</title>
+  <meta name="description" content="Emita e renove seu certificado digital com rapidez, segurança e suporte humano. ICP-Brasil, e-CPF, e-CNPJ e mais." />
+  <meta name="theme-color" content="#e4f0f2" />
+  <meta property="og:title" content="certificado digital seguro" />
+  <meta property="og:description" content="Emissão e renovação de certificado digital com atendimento ágil." />
+  <meta property="og:type" content="website" />
+  <style>
+    :root{
+      --brand:#0e7486;               /* primário escuro para contraste */
+      --brand-2:#126a78;             /* variação */
+      --bg:#e4f0f2;                  /* cor média informada */
+      --ink:#0b2a30;                 /* texto principal */
+      --muted:#547079;               /* texto secundário */
+      --ok:#1f9d55;                  /* destaque positivo */
+      --warn:#b45309;                /* aviso */
+      --radius:16px;
+      --shadow:0 8px 30px rgba(0,0,0,.08);
+      --maxw:1200px;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Inter,Arial}
+    a{color:var(--brand);text-decoration:none}
+    a:hover{text-decoration:underline}
+    .container{max-width:var(--maxw);margin:auto;padding:0 20px}
+    header{position:sticky;top:0;z-index:50;background:rgba(228,240,242,.85);backdrop-filter:saturate(140%) blur(6px);border-bottom:1px solid rgba(0,0,0,.06)}
+    .nav{display:flex;align-items:center;justify-content:space-between;height:68px}
+    .brand{display:flex;gap:10px;align-items:center;font-weight:700;text-transform:lowercase}
+    .brand svg{width:28px;height:28px}
+    .nav a.btn{padding:10px 14px;border-radius:999px;background:var(--brand);color:#fff;box-shadow:var(--shadow);font-weight:600}
+    .nav a.btn:hover{background:var(--brand-2)}
+
+    .hero{padding:56px 0 24px}
+    .hero-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:24px;align-items:center}
+    .card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow)}
+    .p24{padding:24px}
+    h1{margin:0 0 10px;font-size:clamp(28px,3.6vw,42px);line-height:1.2}
+    .lead{color:var(--muted);font-size:18px}
+    .bullets{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px}
+    .pill{display:inline-flex;gap:8px;align-items:center;padding:8px 12px;border-radius:999px;background:#fff;border:1px solid rgba(0,0,0,.06)}
+
+    .cta-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
+    .btn{display:inline-flex;align-items:center;gap:10px;border-radius:999px;padding:12px 16px;font-weight:700;border:1px solid transparent}
+    .btn.primary{background:var(--brand);color:#fff}
+    .btn.primary:hover{background:var(--brand-2)}
+    .btn.ghost{background:#fff;border-color:rgba(0,0,0,.08)}
+
+    .trust{display:flex;gap:14px;flex-wrap:wrap;margin-top:18px;color:var(--muted);font-size:14px}
+    .trust .i{display:inline-flex;gap:8px;align-items:center;padding:8px 12px;border-radius:12px;background:#fff;border:1px solid rgba(0,0,0,.06)}
+
+    section{padding:40px 0}
+    h2{margin:0 0 12px;font-size:clamp(22px,2.8vw,32px)}
+    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+    .item{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow)}
+    .item h3{margin:0 0 6px}
+    .item p{margin:0;color:var(--muted)}
+
+    .steps ol{margin:0;padding-left:20px}
+    .steps li{margin:10px 0}
+
+    .plans .price{font-size:28px;font-weight:800}
+    .plans .note{font-size:14px;color:var(--muted)}
+
+    .faq details{background:#fff;border-radius:12px;box-shadow:var(--shadow);padding:14px}
+    .faq details+details{margin-top:12px}
+    .faq summary{cursor:pointer;font-weight:700}
+    .faq p{color:var(--muted);margin:8px 0 0}
+
+    .contact form{display:grid;gap:10px}
+    input,select,textarea{padding:12px 14px;border:1px solid rgba(0,0,0,.12);border-radius:10px;background:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.6)}
+    textarea{min-height:120px}
+    .contact .side{display:grid;gap:10px}
+    .contact .side .box{background:#fff;border:1px solid rgba(0,0,0,.06);border-radius:12px;padding:14px}
+
+    footer{padding:28px 0;border-top:1px solid rgba(0,0,0,.08);font-size:14px;color:var(--muted)}
+
+    @media (max-width: 980px){
+      .hero-grid{grid-template-columns:1fr}
+      .grid-3{grid-template-columns:1fr}
+      .grid-2{grid-template-columns:1fr}
+    }
+  </style>
 </head>
 <body>
-
-<header>
-  <div class="wrap top">
-    <div class="logo">
-      <div class="mark"></div>
-      <h1>Sua Certificadora</h1>
-    </div>
-    <nav>
-      <a href="#produtos">Produtos</a>
-      <a href="#como-funciona">Como funciona</a>
-      <a href="#faq">Dúvidas</a>
-      <a href="#contato">Contato</a>
-    </nav>
-    <a class="cta" href="https://wa.me/554333040233?text=Ol%C3%A1,%20quero%20emitir%20meu%20certificado." target="_blank" rel="noopener">
-      <i class="fa-brands fa-whatsapp"></i> Fale no WhatsApp
-    </a>
-  </div>
-</header>
-
-<section class="hero">
-  <div class="wrap">
-    <div class="grid">
-      <div class="card">
-        <h2 class="h-title">Certificado Digital com suporte humano e emissão ágil</h2>
-        <p class="h-sub">Atendimento direto no WhatsApp. Orientação completa para pessoa física e jurídica.</p>
-        <div class="badges">
-          <span class="badge">Emissão rápida</span>
-          <span class="badge">Atendimento WhatsApp</span>
-          <span class="badge">Assinatura segura</span>
-        </div>
-        <a class="btn whats" href="https://wa.me/554333040233?text=Ol%C3%A1,%20quero%20emitir%20meu%20certificado." target="_blank" rel="noopener">
-          <i class="fa-brands fa-whatsapp"></i> Iniciar no WhatsApp
-        </a>
-      </div>
-      <div class="card phone-mock">
-        <div>
-          <i class="fa-brands fa-whatsapp"></i>
-          <div style="margin-top:8px;font-size:14px;opacity:.8">Converse agora</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="produtos">
-  <div class="wrap">
-    <h2>Produtos</h2>
-    <div class="grid cols-3">
-      <div class="card prod">
-        <div class="icon"><i class="fa-regular fa-building"></i></div>
-        <h3>e-CNPJ</h3>
-        <p>Identifica a empresa. Permite NF-e e obrigações acessórias.</p>
-        <a class="btn whats" href="https://wa.me/554333040233?text=Ol%C3%A1,%20quero%20emitir%20meu%20certificado%20e-CNPJ." target="_blank"><i class="fa-brands fa-whatsapp"></i> Falar sobre e-CNPJ</a>
-      </div>
-      <div class="card prod">
-        <div class="icon"><i class="fa-solid fa-id-card-clip"></i></div>
-        <h3>PJ-i</h3>
-        <p>Atribuições especiais para regularizações e contingências.</p>
-        <a class="btn whats" href="https://wa.me/554333040233?text=Ol%C3%A1,%20quero%20emitir%20um%20PJ-i." target="_blank"><i class="fa-brands fa-whatsapp"></i> Falar sobre PJ-i</a>
-      </div>
-      <div class="card prod">
-        <div class="icon"><i class="fa-solid fa-file-invoice-dollar"></i></div>
-        <h3>NF-e</h3>
-        <p>Habilita emissão de Notas Fiscais eletrônicas com segurança.</p>
-        <a class="btn whats" href="https://wa.me/554333040233?text=Ol%C3%A1,%20preciso%20de%20certificado%20para%20NF-e." target="_blank"><i class="fa-brands fa-whatsapp"></i> Falar sobre NF-e</a>
-      </div>
-      <div class="card prod">
-        <div class="icon"><i class="fa-solid fa-user-check"></i></div>
-        <h3>e-CPF</h3>
-        <p>Assinatura digital para serviços gov.br e declarações.</p>
-        <a class="btn whats" href="https://wa.me/554333040233?text=Ol%C3%A1,%20quero%20emitir%20meu%20e-CPF." target="_blank"><i class="fa-brands fa-whatsapp"></i> Falar sobre e-CPF</a>
-      </div>
-      <div class="card prod">
-        <div class="icon"><i class="fa-solid fa-scale-balanced"></i></div>
-        <h3>e-Jurídico</h3>
-        <p>Para advogados com OAB. Acesso a sistemas judiciais.</p>
-        <a class="btn whats" href="https://wa.me/554333040233?text=Ol%C3%A1,%20quero%20emitir%20um%20e-Jur%C3%ADdico." target="_blank"><i class="fa-brands fa-whatsapp"></i> Falar sobre e-Jurídico</a>
-      </div>
-      <div class="card prod">
-        <div class="icon"><i class="fa-solid fa-stethoscope"></i></div>
-        <h3>e-Saúde</h3>
-        <p>Para profissionais da saúde com registro ativo.</p>
-        <a class="btn whats" href="https://wa.me/554333040233?text=Ol%C3%A1,%20quero%20emitir%20um%20e-Sa%C3%BAde." target="_blank"><i class="fa-brands fa-whatsapp"></i> Falar sobre e-Saúde</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="como-funciona">
-  <div class="wrap">
-    <h2>Como funciona</h2>
-    <div class="grid cols-3 steps">
-      <div class="card step">
-        <div class="dot">1</div>
-        <div><strong>Atenda pelo WhatsApp</strong><p>Receba a orientação e a lista de documentos.</p></div>
-      </div>
-      <div class="card step">
-        <div class="dot">2</div>
-        <div><strong>Valide seus dados</strong><p>Validação por videoconferência ou presencial.</p></div>
-      </div>
-      <div class="card step">
-        <div class="dot">3</div>
-        <div><strong>Receba e use</strong><p>Certificado pronto para assinar e emitir NF-e.</p></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section">
-  <div class="wrap">
-    <h2>Por que escolher a gente</h2>
-    <div class="grid cols-3">
-      <div class="card benefit"><i class="fa-solid fa-bolt"></i><div><strong>Agilidade</strong><p>Fluxo simples do início ao fim.</p></div></div>
-      <div class="card benefit"><i class="fa-solid fa-shield-check"></i><div><strong>Segurança</strong><p>Boas práticas e orientação contábil.</p></div></div>
-      <div class="card benefit"><i class="fa-solid fa-headset"></i><div><strong>Suporte</strong><p>Atendimento direto no WhatsApp.</p></div></div>
-    </div>
-  </div>
-</section>
-
-<section class="section faq" id="faq">
-  <div class="wrap">
-    <h2>Dúvidas frequentes</h2>
-    <div class="grid">
-      <details class="card"><summary>Qual certificado preciso?</summary><p>Se é pessoa jurídica, geralmente e-CNPJ. Para pessoa física, e-CPF. Fale no WhatsApp para confirmar o melhor tipo.</p></details>
-      <details class="card"><summary>Posso emitir online?</summary><p>Sim, em muitos casos por videoconferência. Se necessário, orientamos o presencial.</p></details>
-      <details class="card"><summary>Tempo de emissão</summary><p>Varia conforme documentos e validação. Em geral, o mesmo dia após validação.</p></details>
-    </div>
-  </div>
-</section>
-
-<footer id="contato">
-  <div class="wrap section foot">
-    <div>
-      <div class="logo" style="margin-bottom:8px">
-        <div class="mark"></div><h1 style="font-size:16px;margin:0">Sua Certificadora</h1>
-      </div>
-      <p style="color:var(--muted);margin:6px 0">Emissão de certificados digitais com suporte humano.</p>
-    </div>
-    <div>
-      <p style="margin:0 0 8px"><strong>Fale agora</strong></p>
-      <a class="btn whats" href="https://wa.me/554333040233?text=Ol%C3%A1,%20quero%20emitir%20meu%20certificado." target="_blank" rel="noopener">
-        <i class="fa-brands fa-whatsapp"></i> WhatsApp
+  <!-- NAV -->
+  <header>
+    <div class="container nav">
+      <a class="brand" href="#top" aria-label="Início">
+        <!-- Logo minimalista -->
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path fill="currentColor" d="M12 2l7 4v6c0 5-3.5 9-7 10-3.5-1-7-5-7-10V6l7-4zm0 5a4 4 0 100 8 4 4 0 000-8z"/>
+        </svg>
+        <span>certificado digital seguro</span>
       </a>
+      <nav aria-label="primária">
+        <a href="#servicos">Serviços</a>
+        &nbsp;·&nbsp;
+        <a href="#como-funciona">Como funciona</a>
+        &nbsp;·&nbsp;
+        <a href="#planos">Planos</a>
+        &nbsp;·&nbsp;
+        <a href="#faq">FAQ</a>
+        &nbsp;·&nbsp;
+        <a class="btn" href="#contato">Contato</a>
+      </nav>
+      <a class="btn primary" href="https://wa.me/554333040233" target="_blank" rel="noopener" aria-label="WhatsApp">WhatsApp</a>
     </div>
-  </div>
-  <div class="wrap" style="padding:0 0 22px;color:var(--muted);font-size:13px">© <span id="year"></span> • Sua Certificadora</div>
-</footer>
+  </header>
 
-<script>
-  document.getElementById('year').textContent = new Date().getFullYear();
-</script>
+  <!-- HERO -->
+  <section class="hero" id="top">
+    <div class="container hero-grid">
+      <div>
+        <h1>Certificado digital com segurança e agilidade</h1>
+        <p class="lead">Emissão e renovação de e-CPF, e-CNPJ e NF-e. Valide por videoconferência ou presencial. Atendimento humano e direto.</p>
+        <div class="bullets">
+          <span class="pill">✔ ICP-Brasil</span>
+          <span class="pill">✔ Emissão em minutos</span>
+          <span class="pill">✔ Suporte dedicado</span>
+        </div>
+        <div class="cta-row">
+          <a class="btn primary" href="#planos">Ver planos</a>
+          <a class="btn ghost" href="#como-funciona">Como funciona</a>
+        </div>
+        <div class="trust">
+          <span class="i">🔐 Criptografia forte</span>
+          <span class="i">🪪 Assinatura digital</span>
+          <span class="i">📜 Conformidade legal</span>
+        </div>
+      </div>
+      <div class="card p24" aria-label="Destaques">
+        <h3 style="margin:0 0 6px">Atalhos rápidos</h3>
+        <div class="grid-2">
+          <a class="item p24" href="#servicos"><h3>Tipos de certificados</h3><p>e-CPF, e-CNPJ, NF-e, CT-e e mais.</p></a>
+          <a class="item p24" href="#como-funciona"><h3>Validação</h3><p>Online por video ou presencial.</p></a>
+          <a class="item p24" href="#planos"><h3>Planos e valores</h3><p>Transparência total.</p></a>
+          <a class="item p24" href="#contato"><h3>Contato</h3><p>Tire dúvidas agora.</p></a>
+        </div>
+      </div>
+    </div>
+  </section>
 
+  <!-- SERVIÇOS -->
+  <section id="servicos">
+    <div class="container">
+      <h2>Serviços</h2>
+      <p class="lead">Soluções para pessoa física, jurídica e profissionais que exigem validade jurídica.</p>
+      <div class="grid-3">
+        <div class="item p24">
+          <h3>e-CPF</h3>
+          <p>Assinatura de documentos, acesso a e-CAC, Conecte SUS e serviços governamentais.</p>
+        </div>
+        <div class="item p24">
+          <h3>e-CNPJ</h3>
+          <p>NF-e, eSocial, e-CAC PJ, procurações e atos societários.</p>
+        </div>
+        <div class="item p24">
+          <h3>NF-e / NFC-e / CT-e</h3>
+          <p>Certificados para emissão de notas e documentos fiscais eletrônicos.</p>
+        </div>
+        <div class="item p24">
+          <h3>Renovação</h3>
+          <p>Renove com reaproveitamento de dados, quando possível, e validação remota.</p>
+        </div>
+        <div class="item p24">
+          <h3>Token / Cartão</h3>
+          <p>Opções A1 (arquivo) e A3 (token/cartão) conforme sua necessidade.</p>
+        </div>
+        <div class="item p24">
+          <h3>Suporte e Instalação</h3>
+          <p>Auxílio completo de instalação e uso com passo a passo.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMO FUNCIONA -->
+  <section id="como-funciona" class="steps">
+    <div class="container">
+      <h2>Como funciona</h2>
+      <div class="grid-2">
+        <div class="item p24">
+          <h3>1) Escolha e envie seus dados</h3>
+          <p>Selecione o tipo de certificado e preencha seus dados com documentos.</p>
+          <h3>2) Validação</h3>
+          <p>Confirmação por videoconferência ou presencial, conforme regras ICP-Brasil.</p>
+          <h3>3) Emissão</h3>
+          <p>Após validar, emitimos o certificado e entregamos as instruções de uso.</p>
+        </div>
+        <div class="item p24">
+          <h3>Documentos básicos</h3>
+          <ol>
+            <li>Pessoa física: documento com foto, CPF e comprovante de endereço.</li>
+            <li>Empresa: contrato social, CNPJ, documentos do responsável.</li>
+            <li>Profissionais: registros de conselho quando aplicável.</li>
+          </ol>
+          <p class="note">Exigências podem variar conforme o tipo de certificado e validação.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PLANOS -->
+  <section id="planos" class="plans">
+    <div class="container">
+      <h2>Planos</h2>
+      <p class="lead">Valores exemplo. Ajuste conforme sua política comercial.</p>
+      <div class="grid-3">
+        <div class="item p24">
+          <h3>A1 e-CPF</h3>
+          <p class="price">R$ 169</p>
+          <p class="note">Validade 12 meses. Arquivo.</p>
+          <a class="btn primary" href="#contato">Contratar</a>
+        </div>
+        <div class="item p24">
+          <h3>A3 e-CPF</h3>
+          <p class="price">R$ 249</p>
+          <p class="note">Token/Cartão. 12 a 36 meses.</p>
+          <a class="btn primary" href="#contato">Contratar</a>
+        </div>
+        <div class="item p24">
+          <h3>e-CNPJ</h3>
+          <p class="price">R$ 389</p>
+          <p class="note">A1 ou A3 conforme demanda.</p>
+          <a class="btn primary" href="#contato">Contratar</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="faq">
+    <div class="container">
+      <h2>Perguntas frequentes</h2>
+      <details>
+        <summary>Qual a diferença entre A1 e A3?</summary>
+        <p>A1 é arquivo instalado no computador. A3 exige mídia criptográfica (token ou cartão). A3 costuma ter validade maior.</p>
+      </details>
+      <details>
+        <summary>Posso validar por vídeo?</summary>
+        <p>Sim. Seguindo as normas da ICP-Brasil quando habilitado para seu tipo de certificado.</p>
+      </details>
+      <details>
+        <summary>Quais formas de pagamento?</summary>
+        <p>Defina aqui: pix, cartão, boleto, faturado etc.</p>
+      </details>
+    </div>
+  </section>
+
+  <!-- CONTATO -->
+  <section id="contato" class="contact">
+    <div class="container">
+      <h2>Contato</h2>
+      <div class="grid-2">
+        <form onsubmit="return sendLead(event)">
+          <input name="nome" placeholder="Nome" required />
+          <input name="email" type="email" placeholder="E-mail" required />
+          <input name="telefone" placeholder="Telefone" />
+          <select name="tipo">
+            <option value="e-CPF">e-CPF</option>
+            <option value="e-CNPJ">e-CNPJ</option>
+            <option value="NF-e">NF-e / NFC-e / CT-e</option>
+            <option value="Renovação">Renovação</option>
+          </select>
+          <textarea name="mensagem" placeholder="Mensagem"></textarea>
+          <button class="btn primary" type="submit">Enviar</button>
+          <p id="form-status" class="note"></p>
+        </form>
+        <div class="side">
+          <div class="box">
+            <h3>WhatsApp</h3>
+            <p><a href="https://wa.me/554333040233" target="_blank" rel="noopener">+55 43 3304-0233</a></p>
+          </div>
+          <div class="box">
+            <h3>Atendimento</h3>
+            <p>Seg a Sex, 08:00–18:00</p>
+          </div>
+          <div class="box">
+            <h3>Endereço</h3>
+            <p>Adicione seu endereço aqui.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      © <span id="y"></span> certificado digital seguro. Todos os direitos reservados.
+    </div>
+  </footer>
+
+  <script>
+    // ano dinâmico
+    document.getElementById('y').textContent = new Date().getFullYear();
+
+    // envio simples sem backend: abre WhatsApp com pré-texto
+    function sendLead(e){
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(e.target).entries());
+      const msg = `Olá! Sou ${data.nome}. Email: ${data.email}. Tel: ${data.telefone||'-'}. Tipo: ${data.tipo}. Mensagem: ${data.mensagem||'-'}`;
+      const url = `https://wa.me/554333040233?text=${encodeURIComponent(msg)}`;
+      window.open(url,'_blank');
+      document.getElementById('form-status').textContent = 'Abrimos uma conversa no WhatsApp com seus dados.';
+      return false;
+    }
+  </script>
 </body>
 </html>
-
