@@ -1,261 +1,121 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>certificado digital seguro</title>
-  <meta name="description" content="Emissão e renovação de certificado digital. e-CPF, e-CNPJ, NF-e. Atendimento ágil." />
-  <meta name="theme-color" content="#e4f0f2" />
-  <style>
-    :root{
-      --bg:#e4f0f2;            /* cor média informada */
-      --brand:#0e7486;         /* primário */
-      --brand-2:#0b5e6c;       /* hover */
-      --ink:#10262a;           /* texto */
-      --muted:#5a6e73;         /* texto secundário */
-      --card:#ffffff;          /* superfícies */
-      --shadow:0 10px 30px rgba(0,0,0,.08);
-      --radius:16px;
-      --maxw:1200px;
-    }
-    *{box-sizing:border-box}
-    html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial}
-    img{max-width:100%;display:block}
-    a{color:var(--brand);text-decoration:none}
-    a:hover{text-decoration:underline}
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>certificado digital seguro — Digital Certificadora</title>
+<meta name="description" content="Certificado digital seguro. Emita e gerencie seu certificado digital com segurança."/>
+<style>
+  :root{
+    --bg:#ffffff;
+    --accent:#E4F0F2; /* RGB(228,240,242) cor solicitada */
+    --teal:#2fa6a8;
+    --text:#0b2b2c;
+    --muted:#6b7680;
+    --maxw:1000px;
+    --radius:14px;
+    --shadow: 0 6px 20px rgba(10,30,30,0.06);
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  }
 
-    /* topo similar ao site de referência: faixa utilidades + header sticky */
-    .topbar{background:#d6e8ec;color:#12414a;font-size:14px}
-    .topbar .wrap{max-width:var(--maxw);margin:auto;padding:6px 16px;display:flex;gap:12px;align-items:center;justify-content:space-between}
-    .topbar .right{display:flex;gap:12px;align-items:center}
+  html,body{height:100%;margin:0;background:var(--bg);color:var(--text)}
+  .container{max-width:var(--maxw);margin:36px auto;padding:28px;box-sizing:border-box;}
+  header{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;}
+  .brand{display:flex;align-items:center;gap:14px;}
+  .brand .company-name{font-weight:700;font-size:14px;text-transform:lowercase;color:var(--muted);letter-spacing:0.6px}
+  .corner-title{font-weight:700;font-size:13px;color:var(--muted);text-transform:none}
+  .hero{display:grid;grid-template-columns:120px 1fr;gap:28px;align-items:center;padding:28px;border-radius:var(--radius);box-shadow:var(--shadow);background:linear-gradient(180deg,var(--accent),#fbfeff);}
+  .logo-wrap{width:120px;height:120px;display:flex;align-items:center;justify-content:center;border-radius:12px;background:rgba(255,255,255,0.5);}
+  .logo-wrap img{max-width:88%;max-height:88%;object-fit:contain;display:block}
+  .hero h1{margin:0;font-size:28px;letter-spacing:1px;color:var(--teal)}
+  .hero p{margin:8px 0 0;color:var(--muted);font-size:15px;line-height:1.45}
+  .cta-row{margin-top:18px;display:flex;gap:12px;flex-wrap:wrap}
+  .btn{display:inline-flex;align-items:center;gap:10px;padding:10px 14px;border-radius:10px;text-decoration:none;font-weight:600;font-size:14px;border:1px solid transparent}
+  .btn--whatsapp{background:transparent;color:#fff;background-color:#25D366;border-radius:10px;padding:10px 14px}
+  .btn--email{background:#ffffff;border:1px solid rgba(11,43,44,0.06);color:var(--text)}
+  section.info{margin-top:24px;display:grid;grid-template-columns:1fr 300px;gap:24px}
+  .card{background:#fff;padding:18px;border-radius:12px;box-shadow:var(--shadow)}
+  .card h3{margin:0 0 8px;font-size:16px;color:var(--text)}
+  .card p{margin:0;color:var(--muted);font-size:14px;line-height:1.5}
+  aside.contact{display:flex;flex-direction:column;gap:12px;align-items:stretch}
+  .contact .small{font-size:13px;color:var(--muted)}
+  footer{margin-top:34px;text-align:center;color:var(--muted);font-size:13px}
 
-    header{position:sticky;top:0;z-index:60;background:#ffffffd9;backdrop-filter:saturate(140%) blur(6px);border-bottom:1px solid rgba(0,0,0,.06)}
-    .nav{max-width:var(--maxw);margin:auto;padding:10px 16px;display:flex;align-items:center;justify-content:space-between}
-    .brand{display:flex;gap:10px;align-items:center;font-weight:800;text-transform:lowercase}
-    .brand .logo{width:36px;height:36px;border-radius:999px;background:#99cfd7;display:grid;place-items:center}
-    .menu{display:flex;gap:18px;align-items:center}
-    .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:999px;border:1px solid rgba(0,0,0,.08);background:#fff;font-weight:700}
-    .btn.primary{background:var(--brand);color:#fff;border-color:transparent}
-    .btn.primary:hover{background:var(--brand-2)}
-
-    /* hero com imagem grande e call-to-action, mantendo estrutura típica */
-    .hero{position:relative}
-    .hero .wrap{max-width:var(--maxw);margin:auto;display:grid;grid-template-columns:1.05fr 1fr;gap:24px;align-items:center;padding:32px 16px}
-    .hero .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px}
-    h1{margin:0 0 8px;font-size:clamp(28px,3.2vw,40px)}
-    .lead{color:var(--muted);font-size:18px;margin:0}
-
-    /* seções blocadas como no site: serviços, diferenciais, passos, depoimentos, faq, contato */
-    section{padding:40px 0}
-    .wrap{max-width:var(--maxw);margin:auto;padding:0 16px}
-    h2{margin:0 0 12px;font-size:clamp(22px,2.6vw,32px)}
-    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-    .grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
-    .item{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px}
-    .muted{color:var(--muted)}
-
-    .faq details{background:var(--card);border-radius:12px;box-shadow:var(--shadow);padding:14px}
-    .faq details+details{margin-top:12px}
-
-    .contact form{display:grid;gap:10px}
-    input,select,textarea{padding:12px 14px;border:1px solid rgba(0,0,0,.12);border-radius:10px;background:#fff}
-    textarea{min-height:120px}
-
-    footer{padding:28px 0;border-top:1px solid rgba(0,0,0,.08);font-size:14px;color:var(--muted)}
-
-    @media (max-width: 980px){
-      .hero .wrap{grid-template-columns:1fr}
-      .grid-3{grid-template-columns:1fr}
-      .grid-2{grid-template-columns:1fr}
-    }
-  </style>
+  /* responsive */
+  @media (max-width:720px){
+    .hero{grid-template-columns:92px 1fr}
+    section.info{grid-template-columns:1fr}
+  }
+</style>
 </head>
 <body>
-  <!-- BARRA SUPERIOR (igual em função) -->
-  <div class="topbar">
-    <div class="wrap">
-      <div>Atendimento: Seg–Sex 08:00–18:00 </div>
-      <div class="right">
-        <a class="btn" id="wht-top" href="#" target="_blank" rel="noopener">WhatsApp</a>
-        <a href="tel:+554333040233">+55 43 3304-0233</a>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <!-- Nome da empresa no canto superior -->
+        <div class="company-name">certificado digital seguro</div>
       </div>
-    </div>
+      <div class="corner-title">Digital Certificadora</div>
+    </header>
+
+    <main>
+      <div class="hero" role="region" aria-label="Apresentação">
+        <div class="logo-wrap" aria-hidden="false">
+          <!-- Substitua logo.png pelo arquivo da imagem (coloque no mesmo diretório) -->
+          <img src="./logo.png" alt="Logotipo Digital Certificadora">
+        </div>
+
+        <div>
+          <h1>DIGITAL<br/>CERTIFICADORA</h1>
+          <p>O seu certificado seguro. Emissão e gestão ágil. Compatível com os principais padrões e com suporte dedicado.</p>
+
+          <div class="cta-row" aria-hidden="false">
+            <!-- WhatsApp: substitui pelo número solicitado -->
+            <a class="btn btn--whatsapp" href="https://wa.me/554333040233" target="_blank" rel="noopener">
+              Abrir WhatsApp
+            </a>
+
+            <!-- Email -->
+            <a class="btn btn--email" href="mailto:dmaiscontabilidade@gmail.com">
+              dmaiscontabilidade@gmail.com
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Conteúdo principal sem as seções "parceria" e "prática de negócio" -->
+      <section class="info" aria-label="Informações">
+        <div class="card">
+          <h3>O que oferecemos</h3>
+          <p>Emissão de certificados digitais com validação segura. Assistência na instalação e integração com sistemas de NF-e e assinaturas eletrônicas.</p>
+
+          <h3 style="margin-top:14px">Como funciona</h3>
+          <p>Solicitação online. Validação de identidade. Emissão e entrega digital. Renovação automática opcional.</p>
+        </div>
+
+        <aside class="contact">
+          <div class="card">
+            <div class="small">Contato</div>
+            <p style="margin:6px 0 0"><strong>WhatsApp:</strong> +55 43 3304 0233</p>
+            <p style="margin:6px 0 0"><strong>Email:</strong> dmaiscontabilidade@gmail.com</p>
+          </div>
+
+          <div class="card">
+            <div class="small">Endereço (exemplo)</div>
+            <p>Rua Exemplo, 123 • Sua Cidade • Estado</p>
+          </div>
+        </aside>
+      </section>
+
+      <footer>
+        © <span id="year"></span> Digital Certificadora — Certificado digital seguro
+      </footer>
+    </main>
   </div>
 
-  <!-- HEADER/NAVEGAÇÃO -->
-  <header>
-    <div class="nav">
-      <a class="brand" href="#home" aria-label="Início">
-        <span class="logo" aria-hidden="true">D</span>
-        <span>certificado digital</span>
-      </a>
-      <nav class="menu" aria-label="primária">
-        <a href="#home">Home</a>
-        <a href="#certificados">Certificados</a>
-        <a href="#vantagens">Vantagens</a>
-        <a href="#como-funciona">Como funciona</a>
-        <a href="#unidades">Unidades</a>
-        <a href="#faq">FAQ</a>
-        <a href="#contato" class="btn primary" id="wht-nav" target="_blank" rel="noopener">Fale no Whats</a>
-      </nav>
-    </div>
-  </header>
-
-  <!-- HERO (faixa grande com imagem ao lado) -->
-  <section class="hero" id="home">
-    <div class="wrap">
-      <div>
-        <h1>Certificado digital com atendimento imediato</h1>
-        <p class="lead">Emissão e renovação de e-CPF, e-CNPJ e NF-e. Validação por videochamada ou presencial.</p>
-        <div style="margin-top:16px;display:flex;gap:12px;flex-wrap:wrap">
-          <a class="btn primary" id="wht-hero" href="#" target="_blank" rel="noopener">Quero emitir agora</a>
-          <a class="btn" href="#certificados">Ver tipos</a>
-        </div>
-      </div>
-      <div class="card">
-        <img src="images/hero.jpg" alt="Atendimento" />
-      </div>
-    </div>
-  </section>
-
-  <!-- BLOCO DE VANTAGENS RÁPIDAS (3 colunas) -->
-  <section id="vantagens">
-    <div class="wrap">
-      <div class="grid-3">
-        <div class="item"><h3>Sem agendamento</h3><p class="muted">Atendimento imediato conforme disponibilidade local.</p></div>
-        <div class="item"><h3>Videochamada</h3><p class="muted">Quando permitido pela ICP-Brasil.</p></div>
-        <div class="item"><h3>Suporte completo</h3><p class="muted">Instalação e uso assistidos.</p></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- TIPOS DE CERTIFICADOS (cards com imagem) -->
-  <section id="certificados">
-    <div class="wrap">
-      <h2>Certificados</h2>
-      <div class="grid-3">
-        <div class="item"><img src="images/servico-ecpf.jpg" alt="e-CPF" /><h3>e-CPF</h3><p class="muted">Para pessoa física.</p></div>
-        <div class="item"><img src="images/servico-ecnpj.jpg" alt="e-CNPJ" /><h3>e-CNPJ</h3><p class="muted">Para empresas.</p></div>
-        <div class="item"><img src="images/servico-nfe.jpg" alt="NF-e" /><h3>NF-e / NFC-e / CT-e</h3><p class="muted">Documentos fiscais.</p></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CHAMADA INTERMEDIÁRIA -->
-  <section>
-    <div class="wrap">
-      <div class="item" style="display:flex;align-items:center;justify-content:space-between;gap:16px">
-        <div>
-          <h2>Emissão em minutos</h2>
-          <p class="muted">Atendimento por WhatsApp.</p>
-        </div>
-        <a class="btn primary" id="wht-cta" href="#" target="_blank" rel="noopener">Falar agora</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- COMO FUNCIONA (2 colunas) -->
-  <section id="como-funciona">
-    <div class="wrap">
-      <h2>Como funciona</h2>
-      <div class="grid-2">
-        <div class="item">
-          <ol>
-            <li>Escolha o tipo de certificado.</li>
-            <li>Envie seus documentos.</li>
-            <li>Validação por vídeo ou presencial.</li>
-            <li>Emissão e orientação de uso.</li>
-          </ol>
-        </div>
-        <div class="item">
-          <img src="images/passo-a-passo.jpg" alt="Passo a passo" />
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- UNIDADES / MAPA (placeholder) -->
-  <section id="unidades">
-    <div class="wrap">
-      <h2>Unidades</h2>
-      <div class="grid-2">
-        <div class="item">
-          <h3>Londrina</h3>
-          <p class="muted">Endereço aqui.</p>
-        </div>
-        <div class="item">
-          <img src="images/mapa.jpg" alt="Mapa" />
-        </div>
-      </div>
-    </div>
-  </section>
-
-
-
-  <!-- FAQ -->
-  <section id="faq" class="faq">
-    <div class="wrap">
-      <h2>Perguntas frequentes</h2>
-      <details><summary>Diferença entre A1 e A3</summary><p class="muted">A1 é arquivo. A3 é token/cartão.</p></details>
-      <details><summary>Videochamada é aceita?</summary><p class="muted">Quando permitido pelas regras da ICP-Brasil.</p></details>
-      <details><summary>Documentos necessários</summary><p class="muted">PF: RG/CPF e comprovante. PJ: contrato social, CNPJ e documentos do responsável.</p></details>
-    </div>
-  </section>
-
-  <!-- CONTATO -->
-  <section id="contato" class="contact">
-    <div class="wrap">
-      <h2>Contato</h2>
-      <div class="grid-2">
-        <form onsubmit="return sendLead(event)">
-          <input name="nome" placeholder="Nome" required />
-          <input name="email" type="email" placeholder="E-mail" required />
-          <input name="telefone" placeholder="Telefone" />
-          <select name="tipo">
-            <option value="e-CPF">e-CPF</option>
-            <option value="e-CNPJ">e-CNPJ</option>
-            <option value="NF-e">NF-e</option>
-            <option value="Renovação">Renovação</option>
-          </select>
-          <textarea name="mensagem" placeholder="Mensagem"></textarea>
-          <button class="btn primary" type="submit">Enviar</button>
-          <p id="form-status" class="muted"></p>
-        </form>
-        <div class="item">
-          <h3>WhatsApp</h3>
-          <p><a id="wht-side" href="#" target="_blank" rel="noopener">+55 43 3304-0233</a></p>
-          <h3>E-mail</h3>
-          <p class="muted">dmaiscontabilidade@gmail.com</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <footer>
-    <div class="wrap">© <span id="y"></span> certificado digital  • Todos os direitos reservados.</div>
-  </footer>
-
-  <script>
-    const WHT_NUM = '554333040233';
-    const defaultMsg = 'Olá, quero emitir meu certificado digital.';
-    function whtLink(msg){ return `https://wa.me/${WHT_NUM}?text=${encodeURIComponent(msg)}`; }
-    function setWhatsTargets(){
-      for(const id of ['wht-top','wht-nav','wht-hero','wht-cta','wht-side']){
-        const el = document.getElementById(id); if(el) el.href = whtLink(defaultMsg);
-      }
-    }
-    setWhatsTargets();
-
-    function sendLead(e){
-      e.preventDefault();
-      const data = Object.fromEntries(new FormData(e.target).entries());
-      const msg = `Olá, quero emitir meu certificado (${data.tipo}). Nome: ${data.nome}. Email: ${data.email}. Tel: ${data.telefone||'-'}. Mensagem: ${data.mensagem||'-'}`;
-      window.open(whtLink(msg),'_blank');
-      document.getElementById('form-status').textContent = 'Conversa no WhatsApp aberta com seus dados.';
-      return false;
-    }
-
-    document.getElementById('y').textContent = new Date().getFullYear();
-  </script>
+<script>
+  // atualiza ano
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
 </body>
 </html>
