@@ -1,592 +1,221 @@
-# Create project structure
-import os, json, zipfile, textwrap, datetime, shutil, pathlib
-
-base = "/mnt/data/certificado-digital-seguro"
-paths = [
-    base,
-    f"{base}/assets",
-    f"{base}/assets/img",
-    f"{base}/css",
-    f"{base}/js",
-    f"{base}/pages"
-]
-for p in paths:
-    os.makedirs(p, exist_ok=True)
-
-# Favicon and placeholder SVG
-favicon_svg = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="12" fill="#0A1F24"/>
-  <path d="M22 22h20v20H22z" fill="#E4F0F2"/>
-  <path d="M32 14a10 10 0 00-10 10v4h4v-4a6 6 0 1112 0v4h4v-4A10 10 0 0032 14z" fill="#89AAB2"/>
-  <path d="M20 28h24v18a4 4 0 01-4 4H24a4 4 0 01-4-4V28z" fill="#15A34A"/>
-</svg>"""
-open(f"{base}/assets/favicon.svg", "w").write(favicon_svg)
-
-# Placeholder OG image SVG
-og_svg = """<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
-  <rect width="1200" height="630" fill="#E4F0F2"/>
-  <text x="50%" y="45%" dominant-baseline="middle" text-anchor="middle" font-size="64" fill="#0A1F24" font-family="system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Arial">certificado digital seguro</text>
-  <text x="50%" y="60%" dominant-baseline="middle" text-anchor="middle" font-size="32" fill="#0A1F24" font-family="system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Arial">Emissão e renovação com segurança e agilidade</text>
-</svg>"""
-open(f"{base}/assets/og-image.svg", "w").write(og_svg)
-
-# CSS (utility-first minimal)
-styles_css = """
-:root{
-  --bg:#E4F0F2;
-  --text:#0A1F24;
-  --muted:#3A4A50;
-  --primary:#0A1F24;
-  --accent:#15A34A;
-  --white:#FFFFFF;
-  --focus:#1D4ED8;
-}
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial,sans-serif;line-height:1.5}
-a{color:inherit}
-img{max-width:100%;height:auto}
-.container{max-width:1140px;margin:0 auto;padding:0 16px}
-.hidden{display:none}
-.btn{display:inline-block;padding:12px 18px;border-radius:12px;font-weight:600;text-decoration:none;border:2px solid transparent;transition:transform .08s ease,background-color .2s ease, border-color .2s ease}
-.btn:focus{outline:3px solid var(--focus);outline-offset:2px}
-.btn:hover{transform:translateY(-1px)}
-.btn-primary{background:var(--accent);color:var(--white)}
-.btn-outline{background:transparent;border-color:var(--text)}
-.badge{display:inline-block;padding:4px 8px;border-radius:999px;background:#d5e6ea;color:var(--text);font-size:12px}
-.header{position:sticky;top:0;background:rgba(228,240,242,0.9);backdrop-filter:saturate(1.5) blur(6px);z-index:50;border-bottom:1px solid #cfe1e6}
-.nav{display:flex;align-items:center;justify-content:space-between;padding:10px 0}
-.logo{font-weight:800;letter-spacing:.2px}
-.menu{display:flex;gap:16px;align-items:center}
-.menu a{padding:10px;border-radius:8px}
-.menu a:focus,.menu a:hover{background:#d5e6ea}
-.hero{padding:56px 0}
-.hero h1{font-size:clamp(28px,5vw,44px);margin:0 0 8px 0}
-.hero p{font-size:clamp(16px,2.5vw,18px);color:var(--muted);margin:0 0 24px 0}
-.grid{display:grid;gap:16px}
-.cards{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
-.card{background:var(--white);border:1px solid #cfe1e6;border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:10px}
-.card h3{margin:0 0 4px 0;font-size:18px}
-.card p{margin:0 0 10px 0;color:var(--muted);font-size:14px}
-.section{padding:40px 0}
-.section h2{font-size:22px;margin:0 0 8px 0}
-.muted{color:var(--muted)}
-.footer{background:#d5e6ea;border-top:1px solid #cfe1e6;margin-top:40px;padding:24px 0}
-hr.sep{border:0;border-top:1px solid #cfe1e6;margin:24px 0}
-.accordion{border:1px solid #cfe1e6;border-radius:12px;overflow:hidden;background:var(--white)}
-.accordion details{border-bottom:1px solid #e3eef1}
-.accordion details:last-child{border-bottom:0}
-.accordion summary{cursor:pointer;padding:14px;font-weight:600;list-style:none}
-.accordion summary::-webkit-details-marker{display:none}
-.accordion-content{padding:0 14px 14px}
-.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
-.tab-btn{padding:8px 12px;border-radius:10px;border:1px solid #cfe1e6;background:#f2f8fa;cursor:pointer}
-.tab-btn[aria-selected="true"]{background:var(--accent);color:var(--white);border-color:var(--accent)}
-.tab-panel{display:none}
-.tab-panel[aria-hidden="false"]{display:block}
-.cookie{position:fixed;inset:auto 12px 12px 12px;background:#0A1F24;color:#fff;padding:14px;border-radius:12px;display:flex;gap:12px;align-items:center;z-index:60;box-shadow:0 10px 20px rgba(0,0,0,.12)}
-.cookie button{border:0;padding:10px 14px;border-radius:10px;background:#15A34A;color:#fff;cursor:pointer}
-.whats-fab{position:fixed;right:18px;bottom:18px;width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#25D366;color:#fff;box-shadow:0 10px 20px rgba(0,0,0,.15);z-index:55;text-decoration:none;font-weight:900}
-input,select,textarea{width:100%;padding:12px;border-radius:10px;border:1px solid #cfe1e6;background:#fff}
-label{font-weight:600}
-.form{display:grid;gap:12px;grid-template-columns:1fr}
-.form .row{display:grid;gap:12px}
-@media(min-width:720px){.form .row{grid-template-columns:1fr 1fr}}
-table{width:100%;border-collapse:collapse}
-th,td{padding:8px;border-bottom:1px solid #cfe1e6;text-align:left}
-.kbd{font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;background:#dbe9ed;padding:2px 6px;border-radius:6px;border:1px solid #cfe1e6;font-size:12px}
-"""
-open(f"{base}/css/styles.css", "w").write(styles_css)
-
-# JS
-main_js = r"""
-/* Accessibility helpers */
-const qs = (s, ctx=document)=>ctx.querySelector(s);
-const qsa = (s, ctx=document)=>Array.from(ctx.querySelectorAll(s));
-
-/* Mobile nav toggle */
-(function(){
-  const btn = document.getElementById('menu-toggle');
-  const nav = document.getElementById('nav-links');
-  if(!btn || !nav) return;
-  btn.addEventListener('click',()=>{
-    const exp = btn.getAttribute('aria-expanded')==='true';
-    btn.setAttribute('aria-expanded', String(!exp));
-    nav.classList.toggle('hidden');
-  });
-})();
-
-/* Tabs */
-(function(){
-  qsa('[role="tab"]').forEach(tab=>{
-    tab.addEventListener('click', ()=>activateTab(tab));
-    tab.addEventListener('keydown', (e)=>{
-      const tabs = qsa('[role="tab"]');
-      let idx = tabs.indexOf(tab);
-      if(e.key === 'ArrowRight') { e.preventDefault(); tabs[(idx+1)%tabs.length].focus(); }
-      if(e.key === 'ArrowLeft')  { e.preventDefault(); tabs[(idx-1+tabs.length)%tabs.length].focus(); }
-    });
-  });
-  function activateTab(tab){
-    const group = tab.closest('[role="tablist"]');
-    qsa('[role="tab"]', group).forEach(t=>t.setAttribute('aria-selected','false'));
-    tab.setAttribute('aria-selected','true');
-    const controls = tab.getAttribute('aria-controls');
-    qsa('[role="tabpanel"]').forEach(p=>p.setAttribute('aria-hidden','true'));
-    document.getElementById(controls).setAttribute('aria-hidden','false');
-  }
-})();
-
-/* Accordion focus styles */
-qsa('details summary').forEach(s=>{
-  s.addEventListener('keydown', (e)=>{
-    if(e.key==='Enter' || e.key===' ') { e.preventDefault(); s.click(); }
-  });
-});
-
-/* Cookie banner */
-(function(){
-  const key = 'cookie-consent-v1';
-  const el = qs('#cookie');
-  if(!el) return;
-  if(localStorage.getItem(key)) { el.remove(); return; }
-  qs('#cookie-accept', el).addEventListener('click', ()=>{
-    localStorage.setItem(key,'1'); el.remove();
-  });
-})();
-
-/* Phone mask BR */
-(function(){
-  function mask(v){
-    v=v.replace(/\D/g,'');
-    if(v.length>11) v=v.slice(0,11);
-    if(v.length>6) return `(${v.slice(0,2)}) ${v.slice(2,7)}-${v.slice(7)}`;
-    if(v.length>2) return `(${v.slice(0,2)}) ${v.slice(2)}`;
-    if(v.length>0) return `(${v}`;
-    return v;
-  }
-  qsa('input[data-mask="phone"]').forEach(i=>{
-    i.addEventListener('input',()=>{ const pos=i.selectionStart; i.value=mask(i.value); i.setSelectionRange(i.value.length,i.value.length); });
-  });
-})();
-
-/* Form validation + mailto submit */
-(function(){
-  qsa('form[data-send="mailto"]').forEach(form=>{
-    form.addEventListener('submit',(e)=>{
-      e.preventDefault();
-      const data = Object.fromEntries(new FormData(form).entries());
-      const required = ['nome','email','telefone','tipo','mensagem'];
-      const missing = required.filter(k=>!String(data[k]||'').trim());
-      if(missing.length){
-        alert('Preencha todos os campos obrigatórios.'); return;
-      }
-      const body = `Nome: ${data.nome}\nE-mail: ${data.email}\nTelefone: ${data.telefone}\nTipo: ${data.tipo}\nMensagem:\n${data.mensagem}`;
-      const subject = encodeURIComponent('Solicitação de suporte - certificado digital seguro');
-      const mail = `mailto:dmaiscontabilidade@gmail.com?subject=${subject}&body=${encodeURIComponent(body)}`;
-      window.location.href = mail;
-    });
-  });
-})();
-
-/* Lazy load */
-if('loading' in HTMLImageElement.prototype){
-  qsa('img[loading="lazy"]').forEach(img=>{});
-}
-
-/* PWA install prompt deferral */
-let deferredPrompt=null;
-window.addEventListener('beforeinstallprompt', (e)=>{ e.preventDefault(); deferredPrompt = e; });
-"""
-open(f"{base}/js/main.js", "w").write(main_js)
-
-# Common head meta
-def head_meta(title, description, url_path="/"):
-    return f"""<!doctype html>
-<html lang="pt-BR">
+<!doctype html>
+<html lang="pt-br">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{title}</title>
-<meta name="description" content="{description}">
-<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
-<link rel="manifest" href="/manifest.webmanifest">
-<meta property="og:title" content="{title}">
-<meta property="og:description" content="{description}">
-<meta property="og:type" content="website">
-<meta property="og:url" content="{url_path}">
-<meta property="og:image" content="/assets/og-image.svg">
-<meta name="theme-color" content="#E4F0F2">
-<link rel="preload" href="/css/styles.css" as="style">
-<link rel="stylesheet" href="/css/styles.css">
-<script type="application/ld+json">
-{json.dumps({
-  "@context":"https://schema.org",
-  "@type":"LocalBusiness",
-  "name":"certificado digital seguro",
-  "image":["/assets/og-image.svg"],
-  "telephone":"+55 43 3304-0233",
-  "email":"dmaiscontabilidade@gmail.com",
-  "address":{
-    "@type":"PostalAddress",
-    "addressLocality":"Londrina",
-    "addressRegion":"PR",
-    "addressCountry":"BR"
-  },
-  "url": url_path,
-  "sameAs":[
-    "https://wa.me/554333040233"
-  ]
-}, ensure_ascii=False, indent=2)}
-</script>
-<script type="application/ld+json">
-{json.dumps({
-  "@context":"https://schema.org",
-  "@type":"Product",
-  "name":"Certificado Digital",
-  "brand":"ICP-Brasil",
-  "description":"Emissão e renovação de e-CPF e e-CNPJ com validação presencial ou por videoconferência.",
-  "offers":{"@type":"AggregateOffer","priceCurrency":"BRL","lowPrice":"0","highPrice":"0","availability":"https://schema.org/InStock"}
-}, ensure_ascii=False, indent=2)}
-</script>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Garcia Certificadora — Sua Versão</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  :root{
+    /* ajuste as cores para ficar próximo do site de referência */
+    --brand:#0fa66e;   /* verde principal */
+    --accent:#f59e0b;  /* laranja de destaque */
+    --ink:#0f172a;     /* texto */
+    --muted:#475569;   /* texto secundário */
+    --bg:#f7faf9;      /* fundo */
+    --card:#ffffff;    /* cartão */
+    --line:#e2e8f0;    /* borda */
+  }
+  *{box-sizing:border-box} html,body{margin:0}
+  body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;color:var(--ink);background:var(--bg)}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 16px}
+  header{background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10}
+  .top{display:flex;align-items:center;justify-content:space-between;padding:12px 0}
+  .logo{display:flex;gap:10px;align-items:center}
+  .logo .mark{width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,var(--brand),#17c184)}
+  .logo h1{font-size:18px;margin:0}
+  nav{display:flex;gap:16px}
+  nav a{font-size:14px;color:var(--muted)}
+  .cta{display:inline-flex;gap:8px;align-items:center;background:var(--brand);color:#fff;padding:10px 14px;border-radius:10px;font-weight:600}
+  .cta i{font-size:18px}
+  .hero{background:linear-gradient(180deg,rgba(15,166,110,.07),transparent);padding:30px 0 24px}
+  .hero .grid{display:grid;grid-template-columns:1.2fr .8fr;gap:24px}
+  .h-title{font-size:30px;line-height:1.15;margin:0 0 8px}
+  .h-sub{color:var(--muted);margin:0 0 16px}
+  .badges{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
+  .badge{font-size:12px;padding:6px 10px;border-radius:999px;background:#eaf9f3;color:#0a6e4d;border:1px solid #cfeede}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
+  .phone-mock{height:260px;border:10px solid #000;border-bottom-width:14px;border-radius:28px;background:#111;display:grid;place-items:center;color:#fff}
+  .section{padding:26px 0}
+  .section h2{font-size:22px;margin:0 0 12px}
+  .grid{display:grid;gap:16px}
+  .grid.cols-3{grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+  .grid.cols-4{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+  .prod .icon{width:52px;height:52px;border-radius:12px;background:#f0fdf4;color:#0a6e4d;display:grid;place-items:center;margin:6px auto 10px}
+  .prod h3{margin:4px 0;font-size:18px}
+  .prod p{margin:0 0 12px;color:var(--muted);font-size:14px}
+  .btn{display:inline-flex;gap:8px;align-items:center;justify-content:center;background:var(--accent);color:#111;padding:10px 14px;border-radius:10px;font-weight:700}
+  .btn.whats{background:#25D366;color:#fff}
+  .steps{counter-reset:step}
+  .step{display:flex;gap:12px}
+  .dot{width:34px;height:34px;border-radius:999px;background:var(--brand);color:#fff;display:grid;place-items:center;font-weight:700;flex:0 0 34px}
+  .step p{margin:0;color:var(--muted)}
+  .benefit{display:flex;gap:12px;align-items:flex-start}
+  .benefit i{color:var(--brand);font-size:18px;margin-top:3px}
+  .faq details{border:1px solid var(--line);border-radius:12px;background:var(--card);padding:12px 14px}
+  .faq summary{cursor:pointer;font-weight:600}
+  .faq p{color:var(--muted);margin:8px 0 0}
+  footer{margin-top:30px;border-top:1px solid var(--line);background:var(--card)}
+  .foot{display:grid;gap:16px;grid-template-columns:1fr 1fr}
+  @media(max-width:880px){
+    .hero .grid{grid-template-columns:1fr}
+    .foot{grid-template-columns:1fr}
+  }
+</style>
 </head>
-"""
-# Header and footer components
-header = """
 <body>
-<header class="header" role="banner">
-  <div class="container nav" aria-label="Topo do site">
-    <a href="/" class="logo" aria-label="Página inicial">certificado digital seguro</a>
-    <nav aria-label="Menu principal">
-      <button id="menu-toggle" class="btn btn-outline" aria-expanded="false" aria-controls="nav-links">Menu</button>
-      <div id="nav-links" class="menu hidden">
-        <a href="/#home">Home</a>
-        <a href="/#servicos">Serviços</a>
-        <a href="/#como-funciona">Como funciona</a>
-        <a href="/#faq">FAQ</a>
-        <a href="/pages/quemsomos.html">Quem somos</a>
-        <a href="/pages/suporte.html">Suporte</a>
-        <a href="/#contato">Contato</a>
-        <a class="btn btn-primary" href="https://wa.me/554333040233" target="_blank" rel="noopener" aria-label="Fale no WhatsApp">Fale no WhatsApp</a>
-      </div>
+
+<header>
+  <div class="wrap top">
+    <div class="logo">
+      <div class="mark"></div>
+      <h1>Sua Certificadora</h1>
+    </div>
+    <nav>
+      <a href="#produtos">Produtos</a>
+      <a href="#como-funciona">Como funciona</a>
+      <a href="#faq">Dúvidas</a>
+      <a href="#contato">Contato</a>
     </nav>
+    <a class="cta" href="https://wa.me/554333040233?text=Ol%C3%A1,%20quero%20emitir%20meu%20certificado." target="_blank" rel="noopener">
+      <i class="fa-brands fa-whatsapp"></i> Fale no WhatsApp
+    </a>
   </div>
 </header>
-<a class="whats-fab" href="https://wa.me/554333040233" target="_blank" aria-label="WhatsApp">
-  WA
-</a>
-"""
 
-footer = f"""
-<footer class="footer" role="contentinfo">
-  <div class="container">
-    <div class="grid" style="grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap:16px">
-      <div>
-        <strong>certificado digital seguro</strong>
-        <p class="muted">Segurança, conformidade com ICP-Brasil e agilidade.</p>
-        <p><span class="badge">Atendimento</span> Londrina/PR e região</p>
+<section class="hero">
+  <div class="wrap">
+    <div class="grid">
+      <div class="card">
+        <h2 class="h-title">Certificado Digital com suporte humano e emissão ágil</h2>
+        <p class="h-sub">Atendimento direto no WhatsApp. Orientação completa para pessoa física e jurídica.</p>
+        <div class="badges">
+          <span class="badge">Emissão rápida</span>
+          <span class="badge">Atendimento WhatsApp</span>
+          <span class="badge">Assinatura segura</span>
+        </div>
+        <a class="btn whats" href="https://wa.me/554333040233?text=Ol%C3%A1,%20quero%20emitir%20meu%20certificado." target="_blank" rel="noopener">
+          <i class="fa-brands fa-whatsapp"></i> Iniciar no WhatsApp
+        </a>
       </div>
-      <div>
-        <strong>Contatos</strong>
-        <p><a href="mailto:dmaiscontabilidade@gmail.com">dmaiscontabilidade@gmail.com</a></p>
-        <p><a href="https://wa.me/554333040233" target="_blank" rel="noopener">+55 43 3304-0233</a></p>
-      </div>
-      <div>
-        <strong>Links</strong>
-        <p><a href="/pages/quemsomos.html">Quem somos</a></p>
-        <p><a href="/pages/politica-privacidade.html">Política de Privacidade (LGPD)</a></p>
-        <p><a href="/pages/suporte.html">Suporte</a></p>
-        <p><a href="/sitemap.xml">Sitemap</a></p>
-      </div>
-      <div>
-        <strong>LGPD</strong>
-        <p class="muted">Usamos dados mínimos para emissão segura. Consulte a política de privacidade.</p>
+      <div class="card phone-mock">
+        <div>
+          <i class="fa-brands fa-whatsapp"></i>
+          <div style="margin-top:8px;font-size:14px;opacity:.8">Converse agora</div>
+        </div>
       </div>
     </div>
-    <hr class="sep">
-    <p class="muted">© {datetime.date.today().year} certificado digital seguro</p>
   </div>
+</section>
+
+<section class="section" id="produtos">
+  <div class="wrap">
+    <h2>Produtos</h2>
+    <div class="grid cols-3">
+      <div class="card prod">
+        <div class="icon"><i class="fa-regular fa-building"></i></div>
+        <h3>e-CNPJ</h3>
+        <p>Identifica a empresa. Permite NF-e e obrigações acessórias.</p>
+        <a class="btn whats" href="https://wa.me/554333040233?text=Ol%C3%A1,%20quero%20emitir%20meu%20certificado%20e-CNPJ." target="_blank"><i class="fa-brands fa-whatsapp"></i> Falar sobre e-CNPJ</a>
+      </div>
+      <div class="card prod">
+        <div class="icon"><i class="fa-solid fa-id-card-clip"></i></div>
+        <h3>PJ-i</h3>
+        <p>Atribuições especiais para regularizações e contingências.</p>
+        <a class="btn whats" href="https://wa.me/554333040233?text=Ol%C3%A1,%20quero%20emitir%20um%20PJ-i." target="_blank"><i class="fa-brands fa-whatsapp"></i> Falar sobre PJ-i</a>
+      </div>
+      <div class="card prod">
+        <div class="icon"><i class="fa-solid fa-file-invoice-dollar"></i></div>
+        <h3>NF-e</h3>
+        <p>Habilita emissão de Notas Fiscais eletrônicas com segurança.</p>
+        <a class="btn whats" href="https://wa.me/554333040233?text=Ol%C3%A1,%20preciso%20de%20certificado%20para%20NF-e." target="_blank"><i class="fa-brands fa-whatsapp"></i> Falar sobre NF-e</a>
+      </div>
+      <div class="card prod">
+        <div class="icon"><i class="fa-solid fa-user-check"></i></div>
+        <h3>e-CPF</h3>
+        <p>Assinatura digital para serviços gov.br e declarações.</p>
+        <a class="btn whats" href="https://wa.me/554333040233?text=Ol%C3%A1,%20quero%20emitir%20meu%20e-CPF." target="_blank"><i class="fa-brands fa-whatsapp"></i> Falar sobre e-CPF</a>
+      </div>
+      <div class="card prod">
+        <div class="icon"><i class="fa-solid fa-scale-balanced"></i></div>
+        <h3>e-Jurídico</h3>
+        <p>Para advogados com OAB. Acesso a sistemas judiciais.</p>
+        <a class="btn whats" href="https://wa.me/554333040233?text=Ol%C3%A1,%20quero%20emitir%20um%20e-Jur%C3%ADdico." target="_blank"><i class="fa-brands fa-whatsapp"></i> Falar sobre e-Jurídico</a>
+      </div>
+      <div class="card prod">
+        <div class="icon"><i class="fa-solid fa-stethoscope"></i></div>
+        <h3>e-Saúde</h3>
+        <p>Para profissionais da saúde com registro ativo.</p>
+        <a class="btn whats" href="https://wa.me/554333040233?text=Ol%C3%A1,%20quero%20emitir%20um%20e-Sa%C3%BAde." target="_blank"><i class="fa-brands fa-whatsapp"></i> Falar sobre e-Saúde</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="como-funciona">
+  <div class="wrap">
+    <h2>Como funciona</h2>
+    <div class="grid cols-3 steps">
+      <div class="card step">
+        <div class="dot">1</div>
+        <div><strong>Atenda pelo WhatsApp</strong><p>Receba a orientação e a lista de documentos.</p></div>
+      </div>
+      <div class="card step">
+        <div class="dot">2</div>
+        <div><strong>Valide seus dados</strong><p>Validação por videoconferência ou presencial.</p></div>
+      </div>
+      <div class="card step">
+        <div class="dot">3</div>
+        <div><strong>Receba e use</strong><p>Certificado pronto para assinar e emitir NF-e.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <h2>Por que escolher a gente</h2>
+    <div class="grid cols-3">
+      <div class="card benefit"><i class="fa-solid fa-bolt"></i><div><strong>Agilidade</strong><p>Fluxo simples do início ao fim.</p></div></div>
+      <div class="card benefit"><i class="fa-solid fa-shield-check"></i><div><strong>Segurança</strong><p>Boas práticas e orientação contábil.</p></div></div>
+      <div class="card benefit"><i class="fa-solid fa-headset"></i><div><strong>Suporte</strong><p>Atendimento direto no WhatsApp.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section faq" id="faq">
+  <div class="wrap">
+    <h2>Dúvidas frequentes</h2>
+    <div class="grid">
+      <details class="card"><summary>Qual certificado preciso?</summary><p>Se é pessoa jurídica, geralmente e-CNPJ. Para pessoa física, e-CPF. Fale no WhatsApp para confirmar o melhor tipo.</p></details>
+      <details class="card"><summary>Posso emitir online?</summary><p>Sim, em muitos casos por videoconferência. Se necessário, orientamos o presencial.</p></details>
+      <details class="card"><summary>Tempo de emissão</summary><p>Varia conforme documentos e validação. Em geral, o mesmo dia após validação.</p></details>
+    </div>
+  </div>
+</section>
+
+<footer id="contato">
+  <div class="wrap section foot">
+    <div>
+      <div class="logo" style="margin-bottom:8px">
+        <div class="mark"></div><h1 style="font-size:16px;margin:0">Sua Certificadora</h1>
+      </div>
+      <p style="color:var(--muted);margin:6px 0">Emissão de certificados digitais com suporte humano.</p>
+    </div>
+    <div>
+      <p style="margin:0 0 8px"><strong>Fale agora</strong></p>
+      <a class="btn whats" href="https://wa.me/554333040233?text=Ol%C3%A1,%20quero%20emitir%20meu%20certificado." target="_blank" rel="noopener">
+        <i class="fa-brands fa-whatsapp"></i> WhatsApp
+      </a>
+    </div>
+  </div>
+  <div class="wrap" style="padding:0 0 22px;color:var(--muted);font-size:13px">© <span id="year"></span> • Sua Certificadora</div>
 </footer>
-<div id="cookie" class="cookie" role="dialog" aria-live="polite" aria-label="Aviso de cookies">
-  <span>Usamos cookies básicos para melhorar sua experiência. Ao continuar, você concorda.</span>
-  <button id="cookie-accept" aria-label="Aceitar cookies">OK</button>
-</div>
-<script src="/js/main.js" defer></script>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+
 </body>
 </html>
-"""
-
-# Index.html
-index_html = head_meta("Certificado Digital com segurança e agilidade | certificado digital seguro",
-                       "Emissão e renovação de certificados digitais e-CPF e e-CNPJ com validação por videoconferência ou presencial em Londrina/PR. Atendimento rápido e seguro.",
-                       "/") + header + """
-<main id="home" class="container">
-  <section class="hero" aria-labelledby="hero-title">
-    <span class="badge">ICP-Brasil</span>
-    <h1 id="hero-title">Emita seu certificado digital com segurança e agilidade</h1>
-    <p>Renove ou emita e-CPF e e-CNPJ A1/A3. Validação por videoconferência ou presencial. Orientação completa.</p>
-    <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(220px,auto));gap:10px">
-      <a class="btn btn-primary" href="https://wa.me/554333040233" target="_blank" rel="noopener" aria-label="Fale no WhatsApp agora">Fale no WhatsApp</a>
-      <a class="btn btn-outline" href="#contato" aria-label="Agendar emissão ou renovação">Agendar emissão/renovação</a>
-    </div>
-  </section>
-
-  <section id="servicos" class="section" aria-labelledby="servicos-title">
-    <h2 id="servicos-title">Serviços</h2>
-    <div class="grid cards">
-      <article class="card">
-        <h3>e-CPF A1</h3>
-        <p>Arquivo digital com validade de 12 meses. Ideal para uso diário no computador.</p>
-        <a class="btn btn-outline" href="#contato">Solicitar</a>
-      </article>
-      <article class="card">
-        <h3>e-CPF A3</h3>
-        <p>Token ou cartão com validade estendida. Proteção física do par de chaves.</p>
-        <a class="btn btn-outline" href="#contato">Solicitar</a>
-      </article>
-      <article class="card">
-        <h3>e-CNPJ A1</h3>
-        <p>Assinatura digital para empresas. Integração com sistemas fiscais.</p>
-        <a class="btn btn-outline" href="#contato">Solicitar</a>
-      </article>
-      <article class="card">
-        <h3>e-CNPJ A3</h3>
-        <p>Token/cartão corporativo com alta segurança para atos societários e fiscais.</p>
-        <a class="btn btn-outline" href="#contato">Solicitar</a>
-      </article>
-      <article class="card">
-        <h3>NF-e</h3>
-        <p>Certificados para emissão de notas fiscais eletrônicas com conformidade.</p>
-        <a class="btn btn-outline" href="#contato">Solicitar</a>
-      </article>
-      <article class="card">
-        <h3>Procurações</h3>
-        <p>Orientação e emissão com representante legal autorizado.</p>
-        <a class="btn btn-outline" href="#contato">Solicitar</a>
-      </article>
-      <article class="card">
-        <h3>Videoconferência</h3>
-        <p>Validação remota segura conforme regras da ICP-Brasil.</p>
-        <a class="btn btn-outline" href="#contato">Agendar</a>
-      </article>
-    </div>
-  </section>
-
-  <section id="como-funciona" class="section" aria-labelledby="fluxo-title">
-    <h2 id="fluxo-title">Como funciona</h2>
-    <ol>
-      <li><strong>Consulta:</strong> definimos o tipo de certificado e requisitos.</li>
-      <li><strong>Envio de documentos:</strong> checagem de conformidade.</li>
-      <li><strong>Validação:</strong> presencial ou por videoconferência.</li>
-      <li><strong>Emissão:</strong> instalação e teste de assinatura.</li>
-      <li><strong>Suporte:</strong> orientações pós-emissão.</li>
-    </ol>
-  </section>
-
-  <section class="section" aria-labelledby="docs-title">
-    <h2 id="docs-title">Documentos necessários</h2>
-    <div class="tabs" role="tablist" aria-label="Tipos de certificado">
-      <button class="tab-btn" role="tab" aria-selected="true" aria-controls="tab-ecpf">e-CPF</button>
-      <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-ecnpj">e-CNPJ</button>
-      <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-nfe">NF-e</button>
-    </div>
-    <div id="tab-ecpf" role="tabpanel" class="tab-panel" aria-hidden="false">
-      <ul>
-        <li>Documento oficial com foto.</li>
-        <li>CPF e comprovante de endereço recente.</li>
-        <li>Para A3: token/cartão compatível (se já possuir).</li>
-      </ul>
-    </div>
-    <div id="tab-ecnpj" role="tabpanel" class="tab-panel" aria-hidden="true">
-      <ul>
-        <li>Contrato social ou documento consolidado.</li>
-        <li>Cartão CNPJ e documentos do responsável.</li>
-        <li>Comprovante de endereço da empresa.</li>
-      </ul>
-    </div>
-    <div id="tab-nfe" role="tabpanel" class="tab-panel" aria-hidden="true">
-      <ul>
-        <li>Dados da empresa e inscrição estadual.</li>
-        <li>Documentos do responsável legal.</li>
-      </ul>
-    </div>
-  </section>
-
-  <section id="faq" class="section" aria-labelledby="faq-title">
-    <h2 id="faq-title">Perguntas frequentes</h2>
-    <div class="accordion" role="region" aria-label="FAQ">
-      <details>
-        <summary>Qual a diferença entre A1 e A3?</summary>
-        <div class="accordion-content">
-          <p>A1 é arquivo com validade de 12 meses. A3 usa mídia física e pode ter validade maior, oferecendo armazenamento isolado da chave privada.</p>
-        </div>
-      </details>
-      <details>
-        <summary>Posso validar por videoconferência?</summary>
-        <div class="accordion-content">
-          <p>Sim, quando permitido pela ICP-Brasil e pela Autoridade Certificadora, seguindo requisitos de identidade e ambiente.</p>
-        </div>
-      </details>
-      <details>
-        <summary>Como renovar?</summary>
-        <div class="accordion-content">
-          <p>Inicie com antecedência. Revalidamos dados e emitimos o novo certificado, preservando continuidade de uso.</p>
-        </div>
-      </details>
-    </div>
-  </section>
-
-  <section class="section" aria-labelledby="depo-title">
-    <h2 id="depo-title">Depoimentos</h2>
-    <div class="grid cards">
-      <article class="card"><p><em>“Placeholder de depoimento.”</em></p><p class="muted">Cliente • Londrina</p></article>
-      <article class="card"><p><em>“Placeholder de depoimento.”</em></p><p class="muted">Cliente • Região</p></article>
-    </div>
-  </section>
-
-  <section id="contato" class="section" aria-labelledby="contato-title">
-    <h2 id="contato-title">Atendimento</h2>
-    <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px">
-      <div>
-        <p><strong>Horário:</strong> Seg a Sex, 9h–18h</p>
-        <p><strong>WhatsApp:</strong> <a href="https://wa.me/554333040233" target="_blank" rel="noopener">+55 43 3304-0233</a></p>
-        <p><strong>E-mail:</strong> <a href="mailto:dmaiscontabilidade@gmail.com">dmaiscontabilidade@gmail.com</a></p>
-        <div class="grid" style="grid-template-columns:repeat(2,minmax(140px,1fr));gap:10px">
-          <a class="btn btn-primary" href="https://wa.me/554333040233" target="_blank" rel="noopener">Fale no WhatsApp</a>
-          <a class="btn btn-outline" href="#contato">Agendar emissão/renovação</a>
-        </div>
-      </div>
-      <div>
-        <iframe title="Mapa de Londrina PR" loading="lazy" referrerpolicy="no-referrer-when-downgrade" style="border:0;width:100%;height:260px;border-radius:12px" src="https://www.google.com/maps?q=Londrina,PR&output=embed"></iframe>
-      </div>
-    </div>
-  </section>
-</main>
-""" + footer
-open(f"{base}/index.html", "w").write(index_html)
-
-# Quem somos
-quem_html = head_meta("Quem somos | certificado digital seguro",
-                      "Conheça nossa atuação em certificação digital com foco em segurança e conformidade.",
-                      "/pages/quemsomos.html") + header + """
-<main class="container section">
-  <h1>Quem somos</h1>
-  <p>Atuamos em certificação digital com foco em segurança, conformidade com a ICP-Brasil e atendimento eficiente. Ajudamos pessoas e empresas a assinar com validade jurídica e integrar processos fiscais.</p>
-  <p>Com operação baseada em Londrina/PR, prestamos suporte na emissão, renovação e uso diário do certificado.</p>
-</main>
-""" + footer
-open(f"{base}/pages/quemsomos.html", "w").write(quem_html)
-
-# Política de Privacidade
-politica_html = head_meta("Política de Privacidade (LGPD) | certificado digital seguro",
-                          "Política de privacidade e tratamento de dados pessoais conforme a LGPD.",
-                          "/pages/politica-privacidade.html") + header + """
-<main class="container section">
-  <h1>Política de Privacidade (LGPD)</h1>
-  <p>Este site coleta dados mínimos necessários para contato e emissão de certificados digitais. As informações são usadas apenas para finalidades relacionadas ao serviço solicitado.</p>
-  <h2>Bases legais</h2>
-  <p>Tratamos dados com base em <strong>execução de contrato</strong> e <strong>cumprimento de obrigação legal/regulatória</strong>, conforme aplicável à ICP-Brasil.</p>
-  <h2>Direitos dos titulares</h2>
-  <p>Você pode solicitar acesso, correção e exclusão dos seus dados, quando cabível. Contato: <a href="mailto:dmaiscontabilidade@gmail.com">dmaiscontabilidade@gmail.com</a>.</p>
-  <h2>Cookies</h2>
-  <p>Usamos cookies estritamente necessários para segurança e funcionalidade básica.</p>
-</main>
-""" + footer
-open(f"{base}/pages/politica-privacidade.html", "w").write(politica_html)
-
-# Suporte
-suporte_html = head_meta("Suporte | certificado digital seguro",
-                         "Suporte técnico para emissão e renovação de certificados digitais.",
-                         "/pages/suporte.html") + header + """
-<main class="container section">
-  <h1>Suporte</h1>
-  <p>Preencha o formulário para receber atendimento. Responderemos por e-mail.</p>
-  <form class="form" data-send="mailto" aria-label="Formulário de suporte">
-    <div class="row">
-      <div>
-        <label for="nome">Nome*</label>
-        <input id="nome" name="nome" required autocomplete="name">
-      </div>
-      <div>
-        <label for="email">E-mail*</label>
-        <input id="email" type="email" name="email" required autocomplete="email">
-      </div>
-    </div>
-    <div class="row">
-      <div>
-        <label for="telefone">Telefone*</label>
-        <input id="telefone" name="telefone" data-mask="phone" required inputmode="numeric" autocomplete="tel">
-      </div>
-      <div>
-        <label for="tipo">Tipo de certificado*</label>
-        <select id="tipo" name="tipo" required>
-          <option value="">Selecione...</option>
-          <option>e-CPF A1</option>
-          <option>e-CPF A3</option>
-          <option>e-CNPJ A1</option>
-          <option>e-CNPJ A3</option>
-          <option>NF-e</option>
-        </select>
-      </div>
-    </div>
-    <div>
-      <label for="mensagem">Mensagem*</label>
-      <textarea id="mensagem" name="mensagem" rows="5" required></textarea>
-    </div>
-    <div>
-      <button class="btn btn-primary" type="submit">Enviar</button>
-      <a class="btn btn-outline" href="https://wa.me/554333040233" target="_blank" rel="noopener">Fale no WhatsApp</a>
-    </div>
-  </form>
-</main>
-""" + footer
-open(f"{base}/pages/suporte.html", "w").write(suporte_html)
-
-# PWA manifest
-manifest = {
-  "name":"certificado digital seguro",
-  "short_name":"certificado",
-  "start_url":"/",
-  "display":"standalone",
-  "background_color":"#E4F0F2",
-  "theme_color":"#E4F0F2",
-  "icons":[
-    {"src":"/assets/favicon.svg","sizes":"64x64","type":"image/svg+xml"}
-  ]
-}
-open(f"{base}/manifest.webmanifest","w").write(json.dumps(manifest, ensure_ascii=False, indent=2))
-
-# Service worker
-sw = """
-self.addEventListener('install', (e)=>{
-  e.waitUntil(caches.open('cds-v1').then(cache=>cache.addAll(['/','/css/styles.css','/js/main.js','/assets/favicon.svg'])));
-});
-self.addEventListener('fetch', (e)=>{
-  e.respondWith(
-    caches.match(e.request).then(res=> res || fetch(e.request))
-  );
-});
-"""
-open(f"{base}/service-worker.js","w").write(sw)
-
-# robots.txt and sitemap.xml
-robots = "User-agent: *\nAllow: /\nSitemap: /sitemap.xml\n"
-open(f"{base}/robots.txt","w").write(robots)
-
-sitemap = f"""<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>/</loc></url>
-  <url><loc>/pages/quemsomos.html</loc></url>
-  <url><loc>/pages/politica-privacidade.html</loc></url>
-  <url><loc>/pages/suporte.html</loc></url>
-</urlset>
-"""
-open(f"{base}/sitemap.xml","w").write(sitemap)
-
-# README
-readme = f"""# certificado digital seguro
-
-Site institucional estático. Rápido, acessível e compatível com ICP-Brasil.
-
-## Estrutura
-
